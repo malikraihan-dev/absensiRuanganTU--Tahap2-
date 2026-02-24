@@ -22,7 +22,7 @@ public class RestMapper implements RowMapper<RestResult> {
         restResult.setValue(rs.getString("value"));
         restResult.setRand(rs.getInt("rand"));
         restResult.setNama(rs.getString("nama"));
-        restResult.setWaktu_input(rs.getDate("waktu_input"));
+        restResult.setWaktu_input(rs.getTimestamp("waktu_input"));
         return restResult;
     }
 }

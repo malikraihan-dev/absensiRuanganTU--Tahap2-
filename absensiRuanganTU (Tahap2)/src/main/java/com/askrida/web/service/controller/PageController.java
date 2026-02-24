@@ -31,6 +31,8 @@ public class PageController {
         try {
             dataAbsensi = repTes.getAll();
         } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("[Dashboard] Error loading absensi: " + e.getMessage());
             dataAbsensi = new ArrayList<>();
         }
         model.addAttribute("dataAbsensi", dataAbsensi);
@@ -52,6 +54,8 @@ public class PageController {
         try {
             dataAbsensi = repTes.getAll();
         } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("[Monitoring] Error loading absensi: " + e.getMessage());
             dataAbsensi = new ArrayList<>();
         }
         model.addAttribute("dataAbsensi", dataAbsensi);

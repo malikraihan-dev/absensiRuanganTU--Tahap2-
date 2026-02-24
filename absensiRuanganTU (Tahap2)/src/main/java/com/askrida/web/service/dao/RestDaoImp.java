@@ -22,7 +22,7 @@ public class RestDaoImp  {
     private JdbcTemplate jdbcTemplate1;
 
     public List<RestResult> getAll() {
-        String sql = "SELECT a.id_absensi AS id, ang.nama_lengkap AS nama, ang.nim AS nim, r.nama_ruangan AS nama_ruangan, a.id_ruangan AS rand, a.jam_masuk AS waktu_input FROM absensi_divisi a JOIN anggota ang ON a.nim_anggota = ang.nim JOIN ruangan r ON a.id_ruangan = r.id_ruangan ORDER BY a.jam_masuk DESC";
+        String sql = "SELECT a.id_absensi AS id, ang.nama_lengkap AS nama, ang.nim AS key, r.nama_ruangan AS value, a.id_ruangan AS rand, a.jam_masuk AS waktu_input FROM absensi_divisi a JOIN anggota ang ON a.nim_anggota = ang.nim JOIN ruangan r ON a.id_ruangan = r.id_ruangan ORDER BY a.jam_masuk DESC";
         return jdbcTemplate1.query(sql, new RestMapper());
     }
 

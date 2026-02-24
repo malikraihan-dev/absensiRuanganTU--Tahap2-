@@ -14,7 +14,6 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import com.askrida.web.service.common.DTOMap;
 
@@ -22,14 +21,9 @@ import com.askrida.web.service.common.DTOMap;
 public class JdbcTemplate extends org.springframework.jdbc.core.JdbcTemplate {
 	protected Logger log = Logger.getLogger(this.getClass());
 	
-	public JdbcTemplate(DriverManagerDataSource ds) {
+	public JdbcTemplate(javax.sql.DataSource ds) {
 		super(ds);
 	}
-	
-	/// ini yang di pake
-//	public JdbcTemplate(@Qualifier("db1") DataSource ds) {
-//		super(ds);
-//	}
 
 	@Override
 	public Object query(String sql, Object[] args, int[] argTypes,
@@ -86,44 +80,20 @@ public class JdbcTemplate extends org.springframework.jdbc.core.JdbcTemplate {
 	@Override
 	public int update(String sql, Object[] args, int[] argTypes)
 			throws DataAccessException {
-		Integer retVal = null;
-		try {
-			log.info(sql);
-			retVal = super.update(sql, args, argTypes);
-			commit();
-			return retVal;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return retVal;
+		log.info(sql);
+		return super.update(sql, args, argTypes);
 	}
 
 	@Override
 	public int update(String sql, Object[] args) throws DataAccessException {
-		Integer retVal = null;
-		try {
-			log.info(sql);
-			retVal = super.update(sql, args);
-			commit();
-			return retVal;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return retVal;
+		log.info(sql);
+		return super.update(sql, args);
 	}
 
 	@Override
 	public int update(String sql) throws DataAccessException {
-		Integer retVal = null;
-		try {
-			log.info(sql);
-			retVal = super.update(sql);
-			commit();
-			return retVal;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return retVal;
+		log.info(sql);
+		return super.update(sql);
 	}
 	
 	public int update(String sql, Object[] args, int[] argTypes, Boolean isCommit)
@@ -193,17 +163,14 @@ public class JdbcTemplate extends org.springframework.jdbc.core.JdbcTemplate {
 		Object[] paramO=param.toArray(new Object[param.size()]);
 		update(sql,paramO,isCommit);
 	}
-	public void commit() throws SQLException{
-		super.getDataSource().getConnection().commit();
-		
+	public void commit() throws SQLException {
+		// Auto-commit is enabled via HikariCP connection pool - no manual commit needed
+		log.debug("commit() called - auto-commit handles this");
 	}
 	
-	public void rollback(){
-		try {
-			super.getDataSource().getConnection().rollback();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+	public void rollback() {
+		// Auto-commit is enabled via HikariCP connection pool - no manual rollback needed
+		log.debug("rollback() called - auto-commit handles this");
 	}
 
 	/**
